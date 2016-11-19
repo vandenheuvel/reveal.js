@@ -1,0 +1,44 @@
+html.dimLight .backgrounds {
+    -webkit-filter: brightness(.9);
+    -moz-filter: brightness(.9);
+    -o-filter: brightness(.9);
+    -ms-filter: brightness(.9);
+    filter: brightness(.9);
+}
+
+html.dim .backgrounds {
+    -webkit-filter: brightness(.7);
+    -moz-filter: brightness(.7);
+    -o-filter: brightness(.7);
+    -ms-filter: brightness(.7);
+    filter: brightness(.7);
+}
+
+html.dimPlus .backgrounds {
+    -webkit-filter: brightness(.5);
+    -moz-filter: brightness(.5);
+    -o-filter: brightness(.5);
+    -ms-filter: brightness(.5);
+    filter: brightness(.5);
+}
+
+html.dimStrong .backgrounds {
+    -webkit-filter: brightness(.4);
+    -moz-filter: brightness(.4);
+    -o-filter: brightness(.4);
+    -ms-filter: brightness(.4);
+    filter: brightness(.4);
+}
+
+.somevspace {
+    height: 40px;
+}
+
+.morevspace {
+    height: 600px;
+}
+
+.shadowbox {
+    background-color: rgba(0, 0, 0, .6);
+    opacity: .8;
+}
