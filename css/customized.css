@@ -1,0 +1,13 @@
+.morevspace {
+    height: 600px;
+}
+
+.shadowbox {
+    background-color: rgba(0, 0, 0, .6);
+    opacity: 1;
+}
+
+.shadowboxLight {
+    background-color: rgba(0, 0, 0, .6);
+    opacity: .8;
+}
