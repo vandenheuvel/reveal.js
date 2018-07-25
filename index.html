@@ -7,7 +7,7 @@
 		<title>reveal.js</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+		<link rel="stylesheet" href="css/theme/delft.css">
 
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -24,8 +24,305 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>Multi-robot parcel sorting systems</h1>
+					<h2>Allocation and path finding</h2>
+					<br />
+					Bram van den Heuvel
+				</section>
+
+				<section data-background-color="rgb(29, 28, 115)">
+					<h3>The committee</h3>
+					<ul>
+						<li>Dr. ir. L. J. J. van Iersel, supervisor</li>
+						<li>Drs. E. M. van Elderen</li>
+						<li>Dr. C. Kraaikamp</li>
+					</ul>
+					<br />
+					<p>July 26, 2018</p>
+				</section>
+
+				<section data-background-color="rgb(29, 28, 115)">
+					<h3>Table of contents</h3>
+					<ul>
+						<li>Online shopping & logistics</li>
+						<li>Robot fleets</li>
+						<li>Mathematical problems</li>
+						<li>Solution techniques</li>
+						<li>Problem 1: Allocation</li>
+						<li>Problem 2: Path finding</li>
+						<li>Summary</li>
+					</ul>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Online shopping & logistics</h3>
+				</section>
+				<section>
+					<h4>Online shopping</h4>
+					<ul>
+						<li>Many buy online</li>
+						<li class="fragment">For 5 consecutive years, growth > 15%</li>
+						<li class="fragment">2016 world-wide total parcels: <div class="fragment">65 billion (that's nine zero's!)</div></li>
+					</ul>
+				</section>
+				<section>
+					<h4>Logistics</h4>
+					<ul>
+						<li>
+							Warehouses and distribution centers change
+							<div class="two_column_environment">
+								<div class="two_column_column">
+									Before:
+									<ul>
+										<li>Many intermediate wholesalers</li>
+										<li>Repacking shipments in smaller units</li>
+										<li>Shipping ends at shop</li>
+									</ul>
+								</div>
+								<div class="two_column_column">
+									Now:
+									<ul>
+										<li>Ship to customer directly</li>
+										<li>Many small parcels are handled</li>
+										<li>Good information systems</li>
+										<li>Affordable robotics</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li>
+							Different processes in distribution centers
+						</li>
+					</ul>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Robot fleets</h3>
+				</section>
+				<section>
+					<h6>Large number of robots, carrying parcels</h6>
+					<img src="img/fleet.jpg" style="width: 1000px;"></img>
+				</section>
+				<section>
+					<h6>Pick up a parcel, and bring to correct drop-off point</h6>
+					<div class="two_column_environment">
+						<div class="two_column_column">
+							<img src="img/place_parcel.jpg" style="height: 700px;"></img>
+						</div>
+						<div class="two_column_column">
+							<img src="img/parcel_drop.jpg" style="height: 700px;"></img>
+						</div>
+					</div>
+				</section>
+				<section>
+					<h4>Robots in action</h4>
+					<video width=1280 heigh=720 autoplay loop>
+						<source src="video/robots.mp4" type="video/mp4">
+					</video>
+				</section>
+				<section>
+					<h4>Benefits</h4>
+					<ul>
+						<li>Dynamically scale capacity</li>
+						<li>Robust</li>
+						<li>Automated</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Secret</h3>
+					<ul>
+						<li>Very little is publicly known about these systems</li>
+						<li>Our goal: understand the relevant mathematical problems</li>
+					</ul>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Mathematical problems</h3>
+				</section>
+				<section>
+					<h4>Scope</h4>
+					Today, we only consider the following problem variant:<br />
+					<ul>
+						<li>The surface area is already determined</li>
+						<li>The number of robots has been decided on</li>
+						<li>All parcels to be sorted are known in advance</li>
+					</ul>
+				</section>
+				<section>
+					<h4>The problems</h4>
+					<ul>
+						<li class="fragment">Allocation: which robots brings which parcel?
+							<ul class="fragment">
+								<li>Pick up parcel close by</li>
+								<li>Fast route is available</li>
+								<li class="fragment">Minimize total completion time</li>
+							</ul>
+						</li>
+						<li class="fragment">Path finding: which route should the robot take?
+							<ul class="fragment">
+								<li>Short route</li>
+								<li>Avoid collisions with other robots</li>
+								<li class="fragment">Minimize total completion time</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Solution techniques</h3>
+				</section>
+				<section>
+					<h4>We will consider two.</h4>
+				</section>
+				<section>
+					<h3>Technique 1: Fast, simple decision rule</h3>
+					<ul>
+						<li class="fragment">Fast, simple</li>
+						<li class="fragment">Solutions often not that good</li>
+						<li class="fragment">Often, scale very well</li>
+						<li class="fragment">Also called <i>heuristic</i></li>
+				</section>
+				<section>
+					<h3>Technique 2: Solving the problem completely</h3>
+					<ul>
+						<li class="fragment">Solutions optimal</li>
+						<li class="fragment">
+							For hard problems:
+							<ul>
+								<li>Slow, more complicated</li>
+								<li>Don't scale</li>
+							</ul>
+						</li>
+					</ul>
+					<br />
+					<p class="fragment">We can do this using <i>linear programs</i></p>
+				</section>
+				<section>
+					<h3>Linear programming</h3>
+					A generic modeling technique, with three steps:</p>
+					<ol>
+						<li class="fragment"><b>Define variables</b>
+							<p>$x^s_{r, i}:$ whether robot $r$ delivers parcel $i$ first</p>
+						</li>
+						<li class="fragment"><b>Define restrictions on those variables</b>
+							<p>$x^s_{r, i} = 1$ if robot $r$ delivers parcel $i$ first, $x^s_{r, i} = 0$ otherwise</p>
+							<p>One request is first: $x^s_{r, 1} + x^s_{r, 2} + \ldots + x^s_{r, n} = 1$</p>
+						</li>
+						<li class="fragment"><b>Define the objective function</b>
+							<p>$\max_r c^s_{r, 1} x^s_{r, 1} + c^s_{r, 2} x^s_{r, 2} + \ldots + c^s_{r, n} x^s_{r, n}$</p></li>
+					</ol>
+					<p class="fragment">Then, solve the formulated problem using a <i>numerical solver</i></p>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Problem 1: Allocation</h3>
+				</section>
+				<section>
+					<h4>Heuristic method</h4>
+					Decision rule:
+					<p>"Have the parcel delivered by the robot that finishes first"</p>
+				</section>
+				<section>
+					<h6>How does it perform?</h6>
+					<img src="img/assignment_greedy.png" width="550"></img><br \>
+					<img src="img/bar.png" width="550"></img>
+				</section>
+				<section>
+					<h4>Exact formulation</h4>
+					Complete description of the problem, modeled as linear program
+				</section>
+				<section>
+					<h6>How does it perform?</h6>
+					<div class="two_column_environment">
+						<div class="two_column_column">
+							<img src="img/assignment_multi.png" width="550"></img><br \>
+							<img src="img/bar.png" width="550"></img>
+						</div>
+						<div class="two_column_column">
+							<img src="img/assignment_multi_gap.png" width="550"></img><br \>
+							<img src="img/bar_gap.png" width="550"></img>
+						</div>
+				</section>
+				<section>
+					<h4>Bonus method: A combination</h4>
+					<p>Two step algorithm:</p>
+					<ol>
+						<li>Use the heuristic to quickly assign parcel deliveries to robots</li>
+						<li>Improve the assignments independently</li>
+					</ol>
+				</section>
+				<section>
+					<h6>How does it perform?</h6>
+					<img src="img/assignment_single.png" width="550"></img><br \>
+					<img src="img/bar.png" width="550"></img>
+				</section>
+				<section>
+					<h6>Comparison</h6>
+					<div class="two_column_environment">
+						<div class="two_column_column">
+							<img src="img/assignment_greedy.png" width="550"></img><br \>
+						</div>
+						<div class="two_column_column">
+							<img src="img/assignment_multi.png" width="550"></img><br \>
+							<img src="img/bar.png" width="550"></img>
+						</div>
+						<div class="two_column_column">
+							<img src="img/assignment_single.png" width="550"></img><br \>
+						</div>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Problem 2: Path finding</h3>
+				</section>
+				<section>
+					<h4>Heuristic method</h4>
+					Decision rule:
+					<p>"Find the fastest path to deliver the parcel, while avoiding collisions"</p>
+				</section>
+				<section>
+					<h6>How does it perform?</h6>
+					<img src="img/path_greedy.png" width="600"></img><br \>
+					<p style="text-align: center;">Ratio of objective value to a lower bound</p>
+				</section>
+				<section>
+					<h4>Exact formulation</h4>
+					<p>Complete description of the problem, modeled as linear program...</p>
+					<p class="fragment" style="text-align: center;">... turns out to be too hard to solve.</p>
+					<br />
+					<p class="fragment">Instead, model the problem one time step into the future</p>
+				</section>
+				<section>
+					<h6>How does it perform?</h6>
+					<img src="img/path_ilp.png" width="600"></img><br \>
+					<p style="text-align: center;">Ratio of objective value to a lower bound</p>
+				</section>
+
+				<section data-background-color="rgb(230, 70, 22)">
+					<h3>Conclusion</h3>
+					<ul>
+						<li>Robot fleet planning brings hard problems</li>
+						<li class="fragment">Assignment problem are satisfactorily solvable:
+							<ul>
+								<li>Heuristic algorithm solves large problems</li>
+								<li>Exact algorithms solves small problems optimally</li>
+								<li>Combination algorithm solves large problems well</li>
+							</ul>
+						<li class="fragment">Path finding seems significantly harder</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Acknowledgement</h3>
+					<ul>
+						<li>Images: 视觉中国</li>
+						<li>Video: YouTube user <i>Mind Blowing Videos</i></li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>The end</h1>
+					<h5>Thank you for your attention!</h5>
+				</section>
 			</div>
 		</div>
 
@@ -37,11 +334,18 @@
 			// - https://github.com/hakimel/reveal.js#configuration
 			// - https://github.com/hakimel/reveal.js#dependencies
 			Reveal.initialize({
+				slideNumber: true,
+				width: 1920,
+				height: 1080,
+				controlsLayout: 'edges',
+				history: true,
+
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/math/math.js', async: true }
 				]
 			});
 		</script>
